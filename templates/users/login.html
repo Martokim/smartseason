@@ -1,0 +1,33 @@
+{% extends 'base.html' %}
+{% block title %}Login — SmartSeason{% endblock %}
+
+{% block content %}
+<div class="max-w-sm mx-auto mt-16 bg-white rounded-xl shadow-sm p-8">
+  <h1 class="text-2xl font-semibold text-gray-800 mb-1">Sign in</h1>
+  <p class="text-sm text-gray-500 mb-6">SmartSeason Field Monitoring</p>
+
+  {% if error %}
+  <div class="bg-red-50 border border-red-200 text-red-700 text-sm px-4 py-2 rounded-lg mb-4">
+    {{ error }}
+  </div>
+  {% endif %}
+
+  <form method="post" class="space-y-4">
+    {% csrf_token %}
+    <div>
+      <label for="username" class="block text-sm font-medium text-gray-700 mb-1">Username</label>
+      <input id="username" type="text" name="username" placeholder="Enter your username" autofocus required
+        class="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-green-500">
+    </div>
+    <div>
+      <label for="password" class="block text-sm font-medium text-gray-700 mb-1">Password</label>
+      <input id="password" type="password" name="password" placeholder="Enter your password" required
+        class="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-green-500">
+    </div>
+    <button type="submit"
+      class="w-full bg-green-600 hover:bg-green-700 text-white font-medium py-2 rounded-lg text-sm transition">
+      Sign in
+    </button>
+  </form>
+</div>
+{% endblock %}

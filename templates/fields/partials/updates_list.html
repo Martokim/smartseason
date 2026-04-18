@@ -1,0 +1,27 @@
+<div class="bg-white rounded-xl shadow-sm overflow-hidden">
+  <div class="px-5 py-4 border-b border-gray-100">
+    <h2 class="font-medium text-gray-700">Update history</h2>
+  </div>
+  {% if updates %}
+  <ul class="divide-y divide-gray-50">
+    {% for update in updates %}
+      <li class="px-5 py-4">
+      <div class="flex justify-between items-start">
+        <div>
+          <span class="text-sm font-medium text-gray-800">{{ update.get_stage_display }}</span>
+          {% if update.notes %}
+          <p class="text-sm text-gray-500 mt-0.5">{{ update.notes }}</p>
+          {% endif %}
+        </div>
+        <div class="text-right text-xs text-gray-400 shrink-0 ml-4">
+          <div>{{ update.agent.username|default:"Unknown" }}</div>
+          <div>{{ update.created_at|date:"M d, Y H:i" }}</div>
+        </div>
+      </div>
+    </li>
+    {% endfor %}
+  </ul>
+  {% else %}
+  <p class="px-5 py-8 text-center text-sm text-gray-400">No updates yet.</p>
+  {% endif %}
+</div>

@@ -1,0 +1,90 @@
+{% extends 'base.html' %}
+{% block title %}Dashboard — SmartSeason{% endblock %}
+
+{% block content %}
+<div class="mb-6">
+  <h1 class="text-2xl font-semibold text-gray-800">Dashboard</h1>
+  <p class="text-sm text-gray-500 mt-1">
+    {% if request.user.is_admin %}Overview of all fields{% else %}Your assigned fields{% endif %}
+  </p>
+</div>
+
+<!-- Stats row -->
+<div class="grid grid-cols-4 gap-4 mb-8">
+  <div class="bg-white rounded-xl shadow-sm p-5 border-l-4 border-gray-300">
+    <p class="text-xs text-gray-500 uppercase tracking-wide">Total</p>
+    <p class="text-3xl font-bold text-gray-800 mt-1">{{ total }}</p>
+  </div>
+  <div class="bg-white rounded-xl shadow-sm p-5 border-l-4 border-green-400">
+    <p class="text-xs text-gray-500 uppercase tracking-wide">Active</p>
+    <p class="text-3xl font-bold text-green-600 mt-1">{{ active_count }}</p>
+  </div>
+  <div class="bg-white rounded-xl shadow-sm p-5 border-l-4 border-amber-400">
+    <p class="text-xs text-gray-500 uppercase tracking-wide">At Risk</p>
+    <p class="text-3xl font-bold text-amber-600 mt-1">{{ at_risk_count }}</p>
+  </div>
+  <div class="bg-white rounded-xl shadow-sm p-5 border-l-4 border-blue-300">
+    <p class="text-xs text-gray-500 uppercase tracking-wide">Completed</p>
+    <p class="text-3xl font-bold text-blue-500 mt-1">{{ completed_count }}</p>
+  </div>
+</div>
+
+<!-- Fields table -->
+<div class="bg-white rounded-xl shadow-sm overflow-hidden">
+  <div class="px-5 py-4 border-b border-gray-100 flex justify-between items-center">
+    <h2 class="font-medium text-gray-700">Fields</h2>
+    {% if request.user.is_admin %}
+    <a href="{% url 'fields:field_create' %}"
+       class="bg-green-600 text-white text-sm px-3 py-1.5 rounded-lg hover:bg-green-700">
+      + New Field
+    </a>
+    {% endif %}
+  </div>
+  <table class="w-full text-sm">
+    <thead class="bg-gray-50 text-gray-500 text-xs uppercase">
+      <tr>
+        <th class="px-5 py-3 text-left">Field</th>
+        <th class="px-5 py-3 text-left">Crop</th>
+        <th class="px-5 py-3 text-left">Stage</th>
+        <th class="px-5 py-3 text-left">Status</th>
+        {% if request.user.is_admin %}
+        <th class="px-5 py-3 text-left">Agent</th>
+        {% endif %}
+        <th class="px-5 py-3 text-left">Days planted</th>
+        <th class="px-5 py-3"></th>
+      </tr>
+    </thead>
+    <tbody class="divide-y divide-gray-50">
+      {% for field in fields %}
+      <tr class="hover:bg-gray-50 transition">
+        <td class="px-5 py-3 font-medium text-gray-800">{{ field.name }}</td>
+        <td class="px-5 py-3 text-gray-600">{{ field.crop_type }}</td>
+        <td class="px-5 py-3 text-gray-600">{{ field.get_stage_display }}</td>
+        <td class="px-5 py-3">
+          <span class="px-2 py-0.5 rounded-full text-xs font-medium
+            {% if field.status == 'active' %}bg-green-100 text-green-700
+            {% elif field.status == 'at_risk' %}bg-amber-100 text-amber-700
+            {% else %}bg-gray-100 text-gray-500{% endif %}">
+            {{ field.status_label }}
+          </span>
+        </td>
+        {% if request.user.is_admin %}
+        <td class="px-5 py-3 text-gray-600">
+          {{ field.assigned_agent.username|default:"Unassigned" }}
+        </td>
+        {% endif %}
+        <td class="px-5 py-3 text-gray-600">{{ field.days_since_planted }}</td>
+        <td class="px-5 py-3">
+          <a href="{% url 'fields:field_detail' field.pk %}"
+             class="text-green-600 hover:underline text-xs">View →</a>
+        </td>
+      </tr>
+      {% empty %}
+      <tr>
+        <td colspan="7" class="px-5 py-8 text-center text-gray-400">No fields yet.</td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</div>
+{% endblock %}
