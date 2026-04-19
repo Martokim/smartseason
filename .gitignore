@@ -1,20 +1,16 @@
-# Python
+# Environment
+.env
+venv/
 __pycache__/
 *.pyc
+*.pyo
 
-# Virtual env
-venv/
-
-# Environment variables
-.env
-
-# Django
+# Database 
 db.sqlite3
-/staticfiles/
 
-# VS Code
-.vscode/
+# Static files — generated on deploy
+staticfiles/
 
-# OS files
+# OS
 .DS_Store
 Thumbs.db
