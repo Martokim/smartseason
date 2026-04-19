@@ -3,285 +3,269 @@
 
 {% block content %}
 <div class="mb-6">
-  <h1 class="text-2xl font-semibold text-gray-800">Dashboard</h1>
-  <p class="text-sm text-gray-500 mt-1">
-    {% if request.user.is_admin %}
-      Overview of all fields
-    {% else %}
-      Your assigned fields
-    {% endif %}
+  <h1 style="color:var(--ss-text);" class="text-2xl font-semibold">Dashboard</h1>
+  <p style="color:var(--ss-text-muted);" class="text-sm mt-1">
+    {% if request.user.is_admin %}Overview of all fields
+    {% else %}Your assigned fields{% endif %}
   </p>
 </div>
 
 <!-- Stats row -->
-<div class="grid grid-cols-2 gap-4 mb-8 sm:grid-cols-4">
-  <div class="bg-white rounded-xl shadow-sm p-5 border-l-4 border-gray-300">
-    <p class="text-xs text-gray-500 uppercase tracking-wide">Total</p>
-    <p class="text-3xl font-bold text-gray-800 mt-1">{{ total }}</p>
+<div class="grid grid-cols-2 gap-4 mb-6 sm:grid-cols-4">
+
+  <div style="background:var(--ss-card);border:1px solid var(--ss-border);
+              border-left:4px solid var(--ss-forest);border-radius:10px;"
+       class="p-5">
+    <p style="color:var(--ss-text-muted);font-size:11px;" class="uppercase tracking-wide">Total</p>
+    <p style="color:var(--ss-forest);" class="text-3xl font-bold mt-1">{{ total }}</p>
   </div>
-  <div class="bg-white rounded-xl shadow-sm p-5 border-l-4 border-green-400">
-    <p class="text-xs text-gray-500 uppercase tracking-wide">Active</p>
-    <p class="text-3xl font-bold text-green-600 mt-1">{{ active_count }}</p>
+
+  <div style="background:var(--ss-sage-bg);border:1px solid var(--ss-sage);
+              border-left:4px solid var(--ss-sage);border-radius:10px;"
+       class="p-5">
+    <p style="color:var(--ss-sage-text);font-size:11px;" class="uppercase tracking-wide">Active</p>
+    <p style="color:var(--ss-sage-text);" class="text-3xl font-bold mt-1">{{ active_count }}</p>
   </div>
-  <div class="bg-white rounded-xl shadow-sm p-5 border-l-4 border-amber-400">
-    <p class="text-xs text-gray-500 uppercase tracking-wide">At Risk</p>
-    <p class="text-3xl font-bold text-amber-600 mt-1">{{ at_risk_count }}</p>
+
+  <div style="background:var(--ss-terra-bg);border:1px solid #f0bfb5;
+              border-left:4px solid var(--ss-terra);border-radius:10px;"
+       class="p-5">
+    <p style="color:var(--ss-terra-text);font-size:11px;" class="uppercase tracking-wide">At Risk</p>
+    <p style="color:var(--ss-terra);" class="text-3xl font-bold mt-1">{{ at_risk_count }}</p>
   </div>
-  <div class="bg-white rounded-xl shadow-sm p-5 border-l-4 border-blue-300">
-    <p class="text-xs text-gray-500 uppercase tracking-wide">Completed</p>
-    <p class="text-3xl font-bold text-blue-500 mt-1">{{ completed_count }}</p>
+
+  <div style="background:var(--ss-gold-bg);border:1px solid #e0d88a;
+              border-left:4px solid var(--ss-gold);border-radius:10px;"
+       class="p-5">
+    <p style="color:var(--ss-gold-text);font-size:11px;" class="uppercase tracking-wide">Completed</p>
+    <p style="color:var(--ss-gold);" class="text-3xl font-bold mt-1">{{ completed_count }}</p>
   </div>
+
 </div>
 
-<!-- Insights row -->
 <!-- Charts row -->
-<div class="grid grid-cols-1 gap-4 mb-8 lg:grid-cols-3">
+{% if total %}
+<div class="grid grid-cols-1 gap-4 mb-6 lg:grid-cols-3">
 
-  <!-- Doughnut — status breakdown -->
-  <div class="bg-white rounded-xl shadow-sm p-5 flex flex-col">
-    <h2 class="font-medium text-gray-700 mb-1">Status overview</h2>
-    <p class="text-xs text-gray-400 mb-4">Current condition of all fields</p>
-    <div class="flex-1 flex items-center justify-center" style="min-height:200px">
-      {% if total %}
+  <div style="background:var(--ss-card);border:1px solid var(--ss-border);border-radius:10px;"
+       class="p-5 flex flex-col">
+    <h2 style="color:var(--ss-text);" class="font-medium mb-1">Status overview</h2>
+    <p style="color:var(--ss-text-muted);" class="text-xs mb-4">Current condition of all fields</p>
+    <div class="flex-1 flex items-center justify-center" style="min-height:180px;">
       <canvas id="statusChart"></canvas>
-      {% else %}
-      <p class="text-sm text-gray-400">No fields yet.</p>
-      {% endif %}
     </div>
   </div>
 
-  <!-- Bar — stage breakdown -->
-  <div class="bg-white rounded-xl shadow-sm p-5 flex flex-col">
-    <h2 class="font-medium text-gray-700 mb-1">Stage breakdown</h2>
-    <p class="text-xs text-gray-400 mb-4">How far along each field is</p>
-    <div class="flex-1 flex items-center justify-center" style="min-height:200px">
-      {% if total %}
+  <div style="background:var(--ss-card);border:1px solid var(--ss-border);border-radius:10px;"
+       class="p-5 flex flex-col">
+    <h2 style="color:var(--ss-text);" class="font-medium mb-1">Stage breakdown</h2>
+    <p style="color:var(--ss-text-muted);" class="text-xs mb-4">How far along each field is</p>
+    <div class="flex-1 flex items-center justify-center" style="min-height:180px;">
       <canvas id="stageChart"></canvas>
-      {% else %}
-      <p class="text-sm text-gray-400">No fields yet.</p>
-      {% endif %}
     </div>
   </div>
 
-  <!-- Needs attention list -->
-  <div class="bg-white rounded-xl shadow-sm p-5 flex flex-col">
-    <h2 class="font-medium text-gray-700 mb-1">
+  <div style="background:var(--ss-card);border:1px solid var(--ss-border);border-radius:10px;"
+       class="p-5 flex flex-col">
+    <h2 style="color:var(--ss-text);" class="font-medium mb-1">
       Needs attention
       {% if needs_attention %}
-      <span class="ml-2 bg-amber-100 text-amber-700 text-xs px-2 py-0.5 rounded-full">
+      <span style="background:var(--ss-terra-bg);color:var(--ss-terra);
+                   border-radius:10px;font-size:11px;padding:2px 8px;margin-left:6px;">
         {{ needs_attention|length }}
       </span>
       {% endif %}
     </h2>
-    <p class="text-xs text-gray-400 mb-4">Fields with no recent updates</p>
-    <div class="flex-1">
-      {% if needs_attention %}
-      <ul class="space-y-3">
-        {% for field in needs_attention %}
-        <li class="flex justify-between items-center">
-          <a href="{% url 'fields:field_detail' field.pk %}"
-             class="text-sm text-gray-800 hover:text-green-600 hover:underline truncate">
-            {{ field.name }}
-          </a>
-          <div class="flex items-center gap-2 shrink-0 ml-2">
-            <span class="text-gray-400 text-xs">{{ field.crop_type }}</span>
-            <span class="px-2 py-0.5 rounded-full text-xs bg-amber-100 text-amber-700">
-              {{ field.get_stage_display }}
-            </span>
-          </div>
-        </li>
-        {% endfor %}
-      </ul>
-      {% else %}
-      <div class="flex-1 flex items-center justify-center h-full">
-        <p class="text-sm text-gray-400">All fields are on track.</p>
-      </div>
-      {% endif %}
-    </div>
+    <p style="color:var(--ss-text-muted);" class="text-xs mb-4">Fields with no recent updates</p>
+    {% if needs_attention %}
+    <ul class="space-y-3 flex-1">
+      {% for field in needs_attention %}
+      <li class="flex justify-between items-center">
+        <a href="{% url 'fields:field_detail' field.pk %}"
+           style="color:var(--ss-text);font-size:13px;"
+           class="hover:underline truncate">{{ field.name }}</a>
+        <span style="background:var(--ss-terra-bg);color:var(--ss-terra-text);
+                     border-radius:10px;font-size:11px;padding:2px 8px;margin-left:8px;
+                     white-space:nowrap;">
+          {{ field.get_stage_display }}
+        </span>
+      </li>
+      {% endfor %}
+    </ul>
+    {% else %}
+    <p style="color:var(--ss-text-muted);" class="text-sm">All fields are on track.</p>
+    {% endif %}
   </div>
 
 </div>
-
-<!-- Chart.js initialisation -->
-{% if total %}
-<script>
-  // ── Shared config ──────────────────────────────────────────────────────────
-  Chart.defaults.font.family = 'ui-sans-serif, system-ui, sans-serif';
-  Chart.defaults.font.size = 12;
-  Chart.defaults.color = '#6b7280';  // Tailwind gray-500
-
-  // ── Status doughnut ────────────────────────────────────────────────────────
-  const statusCtx = document.getElementById('statusChart');
-  if (statusCtx) {
-    new Chart(statusCtx, {
-      type: 'doughnut',
-      data: {
-        labels: ['Active', 'At Risk', 'Completed'],
-        datasets: [{
-          data: [
-            {{ active_count }},
-            {{ at_risk_count }},
-            {{ completed_count }}
-          ],
-          backgroundColor: [
-            '#4ade80',   // green-400
-            '#fbbf24',   // amber-400
-            '#93c5fd',   // blue-300
-          ],
-          borderColor: '#ffffff',
-          borderWidth: 3,
-          hoverOffset: 6,
-        }]
-      },
-      options: {
-        responsive: true,
-        maintainAspectRatio: true,
-        cutout: '65%',
-        plugins: {
-          legend: {
-            position: 'bottom',
-            labels: {
-              padding: 16,
-              usePointStyle: true,
-              pointStyleWidth: 8,
-            }
-          },
-          tooltip: {
-            callbacks: {
-              label: function(context) {
-                const total = context.dataset.data.reduce((a, b) => a + b, 0);
-                const pct = total ? Math.round((context.parsed / total) * 100) : 0;
-                return ` ${context.parsed} fields (${pct}%)`;
-              }
-            }
-          }
-        }
-      }
-    });
-  }
-
-  // ── Stage bar chart ────────────────────────────────────────────────────────
-  const stageCtx = document.getElementById('stageChart');
-  if (stageCtx) {
-    new Chart(stageCtx, {
-      type: 'bar',
-      data: {
-        labels: ['Planted', 'Growing', 'Ready', 'Harvested'],
-        datasets: [{
-          label: 'Fields',
-          data: [
-            {{ stage_breakdown.planted }},
-            {{ stage_breakdown.growing }},
-            {{ stage_breakdown.ready }},
-            {{ stage_breakdown.harvested }}
-          ],
-          backgroundColor: [
-            '#93c5fd',   // blue-300  — planted
-            '#4ade80',   // green-400 — growing
-            '#fbbf24',   // amber-400 — ready
-            '#d1d5db',   // gray-300  — harvested
-          ],
-          borderRadius: 6,
-          borderSkipped: false,
-        }]
-      },
-      options: {
-        responsive: true,
-        maintainAspectRatio: true,
-        plugins: {
-          legend: { display: false },
-          tooltip: {
-            callbacks: {
-              label: function(context) {
-                return ` ${context.parsed.y} field${context.parsed.y !== 1 ? 's' : ''}`;
-              }
-            }
-          }
-        },
-        scales: {
-          x: {
-            grid: { display: false },
-            border: { display: false },
-          },
-          y: {
-            beginAtZero: true,
-            ticks: {
-              stepSize: 1,
-              precision: 0,
-            },
-            grid: {
-              color: '#f3f4f6',  // gray-100
-            },
-            border: { display: false },
-          }
-        }
-      }
-    });
-  }
-</script>
 {% endif %}
 
 <!-- Fields table -->
-<div class="bg-white rounded-xl shadow-sm overflow-hidden">
-  <div class="px-5 py-4 border-b border-gray-100 flex justify-between items-center">
-    <h2 class="font-medium text-gray-700">Fields</h2>
+<div style="background:var(--ss-card);border:1px solid var(--ss-border);border-radius:10px;"
+     class="overflow-hidden">
+  <div style="border-bottom:1px solid var(--ss-border);"
+       class="px-5 py-4 flex justify-between items-center">
+    <h2 style="color:var(--ss-text);" class="font-medium">Fields</h2>
     {% if request.user.is_admin %}
     <a href="{% url 'fields:field_create' %}"
-       class="bg-green-600 text-white text-sm px-3 py-1.5 rounded-lg hover:bg-green-700 transition">
+       style="background:var(--ss-forest);color:var(--ss-cream);border-radius:6px;"
+       class="text-sm px-3 py-1.5 hover:opacity-90 transition">
       + New Field
     </a>
     {% endif %}
   </div>
 
   <table class="w-full text-sm">
-    <thead class="bg-gray-50 text-gray-500 text-xs uppercase">
-      <tr>
-        <th class="px-5 py-3 text-left">Field</th>
-        <th class="px-5 py-3 text-left">Crop</th>
-        <th class="px-5 py-3 text-left">Stage</th>
-        <th class="px-5 py-3 text-left">Status</th>
+    <thead>
+      <tr style="background:var(--ss-cream);color:var(--ss-text-muted);font-size:11px;">
+        <th class="px-5 py-3 text-left uppercase tracking-wide">Field</th>
+        <th class="px-5 py-3 text-left uppercase tracking-wide">Crop</th>
+        <th class="px-5 py-3 text-left uppercase tracking-wide">Stage</th>
+        <th class="px-5 py-3 text-left uppercase tracking-wide">Status</th>
         {% if request.user.is_admin %}
-        <th class="px-5 py-3 text-left">Agent</th>
+        <th class="px-5 py-3 text-left uppercase tracking-wide">Agent</th>
         {% endif %}
-        <th class="px-5 py-3 text-left">Days planted</th>
+        <th class="px-5 py-3 text-left uppercase tracking-wide">Days</th>
         <th class="px-5 py-3"></th>
       </tr>
     </thead>
-    <tbody class="divide-y divide-gray-50">
+    <tbody>
       {% for field in fields %}
-      <tr class="hover:bg-gray-50 transition">
-        <td class="px-5 py-3 font-medium text-gray-800">{{ field.name }}</td>
-        <td class="px-5 py-3 text-gray-600">{{ field.crop_type }}</td>
-        <td class="px-5 py-3 text-gray-600">{{ field.get_stage_display }}</td>
+      <tr style="border-top:1px solid var(--ss-border);"
+          class="hover:bg-amber-50 transition">
         <td class="px-5 py-3">
-          <span class="px-2 py-0.5 rounded-full text-xs font-medium
-            {% if field.status == 'active' %}bg-green-100 text-green-700
-            {% elif field.status == 'at_risk' %}bg-amber-100 text-amber-700
-            {% else %}bg-gray-100 text-gray-500{% endif %}">
-            {{ field.status_label }}
+          <span style="color:var(--ss-text);font-weight:500;">{{ field.name }}</span>
+        </td>
+        <td class="px-5 py-3" style="color:var(--ss-text-muted);">{{ field.crop_type }}</td>
+        <td class="px-5 py-3" style="color:var(--ss-text-muted);">{{ field.get_stage_display }}</td>
+        <td class="px-5 py-3">
+          {% if field.status == 'active' %}
+          <span style="background:var(--ss-sage-bg);color:var(--ss-sage-text);
+                       border-radius:10px;font-size:11px;padding:3px 10px;">
+            Active
           </span>
+          {% elif field.status == 'at_risk' %}
+          <span style="background:var(--ss-terra-bg);color:var(--ss-terra-text);
+                       border-radius:10px;font-size:11px;padding:3px 10px;">
+            At Risk
+          </span>
+          {% else %}
+          <span style="background:var(--ss-gold-bg);color:var(--ss-gold-text);
+                       border-radius:10px;font-size:11px;padding:3px 10px;">
+            Completed
+          </span>
+          {% endif %}
         </td>
         {% if request.user.is_admin %}
-        <td class="px-5 py-3 text-gray-600">
+        <td class="px-5 py-3" style="color:var(--ss-text-muted);">
           {{ field.assigned_agent.username|default:"Unassigned" }}
         </td>
         {% endif %}
-        <td class="px-5 py-3 text-gray-600">{{ field.days_since_planted }}</td>
+        <td class="px-5 py-3" style="color:var(--ss-text-muted);">
+          {{ field.days_since_planted }}
+        </td>
         <td class="px-5 py-3">
           <a href="{% url 'fields:field_detail' field.pk %}"
-             class="text-green-600 hover:underline text-xs">
-            View →
-          </a>
+             style="color:var(--ss-terra);font-size:12px;"
+             class="hover:underline">View &#8594;</a>
         </td>
       </tr>
       {% empty %}
       <tr>
-        <td colspan="7" class="px-5 py-10 text-center text-gray-400 text-sm">
-          No fields yet.
-        </td>
+        <td colspan="7" class="px-5 py-10 text-center"
+            style="color:var(--ss-text-muted);">No fields yet.</td>
       </tr>
       {% endfor %}
     </tbody>
   </table>
 </div>
+
+<!-- Chart.js init -->
+{% if total %}
+<script>
+  const ssForest  = '#313A16';
+  const ssTerra   = '#C6482F';
+  const ssGold    = '#AEA03E';
+  const ssSage    = '#A3A480';
+  const ssMauve   = '#A49AA0';
+  const ssCream   = '#F1EAD5';
+
+  Chart.defaults.font.family = 'ui-sans-serif, system-ui, sans-serif';
+  Chart.defaults.font.size   = 12;
+  Chart.defaults.color       = '#6b6a55';
+
+  new Chart(document.getElementById('statusChart'), {
+    type: 'doughnut',
+    data: {
+      labels: ['Active', 'At Risk', 'Completed'],
+      datasets: [{
+        data: [{{ active_count }}, {{ at_risk_count }}, {{ completed_count }}],
+        backgroundColor: [ssSage, ssTerra, ssGold],
+        borderColor: '#FDFBF5',
+        borderWidth: 3,
+        hoverOffset: 6,
+      }]
+    },
+    options: {
+      responsive: true,
+      cutout: '65%',
+      plugins: {
+        legend: {
+          position: 'bottom',
+          labels: { padding: 16, usePointStyle: true, pointStyleWidth: 8 }
+        },
+        tooltip: {
+          callbacks: {
+            label: ctx => {
+              const t = ctx.dataset.data.reduce((a,b)=>a+b,0);
+              const p = t ? Math.round((ctx.parsed/t)*100) : 0;
+              return ` ${ctx.parsed} fields (${p}%)`;
+            }
+          }
+        }
+      }
+    }
+  });
+
+  new Chart(document.getElementById('stageChart'), {
+    type: 'bar',
+    data: {
+      labels: ['Planted', 'Growing', 'Ready', 'Harvested'],
+      datasets: [{
+        label: 'Fields',
+        data: [
+          {{ stage_breakdown.planted }},
+          {{ stage_breakdown.growing }},
+          {{ stage_breakdown.ready }},
+          {{ stage_breakdown.harvested }}
+        ],
+        backgroundColor: [ssMauve, ssSage, ssGold, ssForest],
+        borderRadius: 6,
+        borderSkipped: false,
+      }]
+    },
+    options: {
+      responsive: true,
+      plugins: {
+        legend: { display: false },
+        tooltip: {
+          callbacks: {
+            label: ctx => ` ${ctx.parsed.y} field${ctx.parsed.y !== 1 ? 's' : ''}`
+          }
+        }
+      },
+      scales: {
+        x: { grid: { display: false }, border: { display: false } },
+        y: {
+          beginAtZero: true,
+          ticks: { stepSize: 1, precision: 0 },
+          grid: { color: '#e8dfc8' },
+          border: { display: false }
+        }
+      }
+    }
+  });
+</script>
+{% endif %}
+
 {% endblock %}

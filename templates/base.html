@@ -6,30 +6,77 @@
   <title>{% block title %}SmartSeason{% endblock %}</title>
   <script src="https://cdn.tailwindcss.com"></script>
   <script src="https://unpkg.com/htmx.org@1.9.10"></script>
-  <script src="https://cdn.tailwindcss.com"></script>
-  <script src="https://unpkg.com/htmx.org@1.9.10"></script>
   <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+  <style>
+    :root {
+      --ss-forest:     #313A16;
+      --ss-forest-90:  #3d481c;
+      --ss-cream:      #F1EAD5;
+      --ss-cream-dark: #e8dfc8;
+      --ss-terra:      #C6482F;
+      --ss-terra-bg:   #faeae7;
+      --ss-terra-text: #7a2318;
+      --ss-gold:       #AEA03E;
+      --ss-gold-bg:    #faf6dc;
+      --ss-gold-text:  #6b6118;
+      --ss-sage:       #A3A480;
+      --ss-sage-bg:    #f2f2e8;
+      --ss-sage-text:  #4a4b2e;
+      --ss-mauve:      #A49AA0;
+      --ss-card:       #FDFBF5;
+      --ss-border:     #ddd8c4;
+      --ss-text:       #1e2410;
+      --ss-text-muted: #6b6a55;
+    }
+
+    body {
+      background-color: var(--ss-cream) !important;
+      color: var(--ss-text);
+      font-family: ui-sans-serif, system-ui, sans-serif;
+    }
+
+    /* Scrollbar to match palette */
+    ::-webkit-scrollbar { width: 6px; }
+    ::-webkit-scrollbar-track { background: var(--ss-cream); }
+    ::-webkit-scrollbar-thumb { background: var(--ss-sage); border-radius: 3px; }
+  </style>
 </head>
-<body class="bg-gray-50 min-h-screen">
+<body>
 
   <!-- Navbar -->
-  <nav class="bg-green-700 text-white px-6 py-3 flex justify-between items-center shadow">
-    <a href="{% url 'fields:dashboard' %}" class="font-bold text-lg tracking-tight">
-      🌱 SmartSeason
+  <nav style="background:var(--ss-forest);color:var(--ss-cream);"
+       class="px-6 py-3 flex justify-between items-center shadow-sm">
+    <a href="{% url 'fields:dashboard' %}"
+       style="color:var(--ss-cream);"
+       class="font-bold text-lg tracking-tight">
+      &#127807; SmartSeason
     </a>
     {% if request.user.is_authenticated %}
     <div class="flex items-center gap-5 text-sm">
-      <a href="{% url 'fields:dashboard' %}" class="hover:underline">Dashboard</a>
-      <a href="{% url 'fields:field_list' %}" class="hover:underline">Fields</a>
+      <a href="{% url 'fields:dashboard' %}"
+         style="color:var(--ss-cream);opacity:0.85;"
+         class="hover:opacity-100 transition">Dashboard</a>
+      <a href="{% url 'fields:field_list' %}"
+         style="color:var(--ss-cream);opacity:0.85;"
+         class="hover:opacity-100 transition">Fields</a>
       {% if request.user.is_admin %}
-      <a href="{% url 'fields:field_create' %}" class="hover:underline">+ New Field</a>
+      <a href="{% url 'fields:field_create' %}"
+         style="background:var(--ss-terra);color:#fff;border-radius:6px;"
+         class="px-3 py-1 text-sm hover:opacity-90 transition">
+        + New Field
+      </a>
       {% endif %}
-      <span class="opacity-60">|</span>
-      <span>{{ request.user.username }}</span>
-      <span class="bg-green-600 px-2 py-0.5 rounded text-xs">
+      <span style="opacity:0.3;">|</span>
+      <span style="color:var(--ss-cream);opacity:0.75;">
+        {{ request.user.username }}
+      </span>
+      <span style="background:var(--ss-sage);color:var(--ss-forest);
+                   border-radius:4px;font-size:11px;padding:2px 8px;">
         {{ request.user.get_role_display }}
       </span>
-      <a href="{% url 'users:logout' %}" class="hover:underline">Logout</a>
+      <a href="{% url 'users:logout' %}"
+         style="color:var(--ss-cream);opacity:0.7;"
+         class="hover:opacity-100 transition">Logout</a>
     </div>
     {% endif %}
   </nav>
@@ -38,14 +85,15 @@
   {% if messages %}
   <div class="max-w-5xl mx-auto mt-4 px-4">
     {% for message in messages %}
-    <div class="bg-green-100 border border-green-300 text-green-800 px-4 py-2 rounded-lg text-sm mb-2">
+    <div style="background:var(--ss-sage-bg);border:1px solid var(--ss-sage);
+                color:var(--ss-sage-text);border-radius:8px;"
+         class="px-4 py-2 text-sm mb-2">
       {{ message }}
     </div>
     {% endfor %}
   </div>
   {% endif %}
 
-  <!-- Page content -->
   <main class="max-w-5xl mx-auto px-4 py-8">
     {% block content %}{% endblock %}
   </main>

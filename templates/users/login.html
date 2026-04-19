@@ -2,12 +2,24 @@
 {% block title %}Login — SmartSeason{% endblock %}
 
 {% block content %}
-<div class="max-w-sm mx-auto mt-16 bg-white rounded-xl shadow-sm p-8">
-  <h1 class="text-2xl font-semibold text-gray-800 mb-1">Sign in</h1>
-  <p class="text-sm text-gray-500 mb-6">SmartSeason Field Monitoring</p>
+<div class="max-w-sm mx-auto mt-16"
+     style="background:var(--ss-card);border:1px solid var(--ss-border);
+            border-radius:12px;padding:2rem;">
+
+  <div style="text-align:center;margin-bottom:1.5rem;">
+    <div style="font-size:32px;">&#127807;</div>
+    <h1 style="color:var(--ss-forest);font-size:1.4rem;font-weight:600;margin-top:8px;">
+      SmartSeason
+    </h1>
+    <p style="color:var(--ss-text-muted);font-size:13px;margin-top:4px;">
+      Field Monitoring System
+    </p>
+  </div>
 
   {% if error %}
-  <div class="bg-red-50 border border-red-200 text-red-700 text-sm px-4 py-2 rounded-lg mb-4">
+  <div style="background:var(--ss-terra-bg);border:1px solid #f0bfb5;
+              color:var(--ss-terra-text);border-radius:8px;font-size:13px;"
+       class="px-4 py-2 mb-4">
     {{ error }}
   </div>
   {% endif %}
@@ -15,17 +27,31 @@
   <form method="post" class="space-y-4">
     {% csrf_token %}
     <div>
-      <label for="username" class="block text-sm font-medium text-gray-700 mb-1">Username</label>
-      <input id="username" type="text" name="username" placeholder="Enter your username" autofocus required
-        class="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-green-500">
+      <label style="color:var(--ss-text);font-size:13px;font-weight:500;"
+             class="block mb-1">Username</label>
+      <input type="text" name="username" autofocus required
+        style="width:100%;border:1px solid var(--ss-border);background:var(--ss-cream);
+               border-radius:8px;padding:8px 12px;font-size:14px;color:var(--ss-text);
+               outline:none;box-sizing:border-box;"
+        onfocus="this.style.borderColor='var(--ss-forest)'"
+        onblur="this.style.borderColor='var(--ss-border)'">
     </div>
     <div>
-      <label for="password" class="block text-sm font-medium text-gray-700 mb-1">Password</label>
-      <input id="password" type="password" name="password" placeholder="Enter your password" required
-        class="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-green-500">
+      <label style="color:var(--ss-text);font-size:13px;font-weight:500;"
+             class="block mb-1">Password</label>
+      <input type="password" name="password" required
+        style="width:100%;border:1px solid var(--ss-border);background:var(--ss-cream);
+               border-radius:8px;padding:8px 12px;font-size:14px;color:var(--ss-text);
+               outline:none;box-sizing:border-box;"
+        onfocus="this.style.borderColor='var(--ss-forest)'"
+        onblur="this.style.borderColor='var(--ss-border)'">
     </div>
     <button type="submit"
-      class="w-full bg-green-600 hover:bg-green-700 text-white font-medium py-2 rounded-lg text-sm transition">
+      style="width:100%;background:var(--ss-forest);color:var(--ss-cream);
+             border:none;border-radius:8px;padding:10px;font-size:14px;
+             font-weight:500;cursor:pointer;"
+      onmouseover="this.style.background='var(--ss-forest-90)'"
+      onmouseout="this.style.background='var(--ss-forest)'">
       Sign in
     </button>
   </form>
