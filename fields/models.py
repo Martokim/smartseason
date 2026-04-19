@@ -38,11 +38,20 @@ class Field(models.Model):
     def status(self):
         if self.stage == self.HARVESTED:
             return 'completed'
-        days_stale = (timezone.now() - self.updated_at).days
-        if self.stage == self.READY and days_stale > 14:
+
+        last_update = self.updates.order_by('-created_at').first()
+
+        if last_update:
+            days_since = (timezone.now() - last_update.created_at).days
+        else:
+            # No updates ever posted — measure from planting date
+            days_since = (timezone.now().date() - self.planting_date).days
+
+        if self.stage == self.READY and days_since > 14:
             return 'at_risk'
-        if days_stale > 7:
+        if days_since > 7:
             return 'at_risk'
+
         return 'active'
 
     @property

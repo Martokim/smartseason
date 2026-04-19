@@ -33,6 +33,194 @@
   </div>
 </div>
 
+<!-- Insights row -->
+<!-- Charts row -->
+<div class="grid grid-cols-1 gap-4 mb-8 lg:grid-cols-3">
+
+  <!-- Doughnut — status breakdown -->
+  <div class="bg-white rounded-xl shadow-sm p-5 flex flex-col">
+    <h2 class="font-medium text-gray-700 mb-1">Status overview</h2>
+    <p class="text-xs text-gray-400 mb-4">Current condition of all fields</p>
+    <div class="flex-1 flex items-center justify-center" style="min-height:200px">
+      {% if total %}
+      <canvas id="statusChart"></canvas>
+      {% else %}
+      <p class="text-sm text-gray-400">No fields yet.</p>
+      {% endif %}
+    </div>
+  </div>
+
+  <!-- Bar — stage breakdown -->
+  <div class="bg-white rounded-xl shadow-sm p-5 flex flex-col">
+    <h2 class="font-medium text-gray-700 mb-1">Stage breakdown</h2>
+    <p class="text-xs text-gray-400 mb-4">How far along each field is</p>
+    <div class="flex-1 flex items-center justify-center" style="min-height:200px">
+      {% if total %}
+      <canvas id="stageChart"></canvas>
+      {% else %}
+      <p class="text-sm text-gray-400">No fields yet.</p>
+      {% endif %}
+    </div>
+  </div>
+
+  <!-- Needs attention list -->
+  <div class="bg-white rounded-xl shadow-sm p-5 flex flex-col">
+    <h2 class="font-medium text-gray-700 mb-1">
+      Needs attention
+      {% if needs_attention %}
+      <span class="ml-2 bg-amber-100 text-amber-700 text-xs px-2 py-0.5 rounded-full">
+        {{ needs_attention|length }}
+      </span>
+      {% endif %}
+    </h2>
+    <p class="text-xs text-gray-400 mb-4">Fields with no recent updates</p>
+    <div class="flex-1">
+      {% if needs_attention %}
+      <ul class="space-y-3">
+        {% for field in needs_attention %}
+        <li class="flex justify-between items-center">
+          <a href="{% url 'fields:field_detail' field.pk %}"
+             class="text-sm text-gray-800 hover:text-green-600 hover:underline truncate">
+            {{ field.name }}
+          </a>
+          <div class="flex items-center gap-2 shrink-0 ml-2">
+            <span class="text-gray-400 text-xs">{{ field.crop_type }}</span>
+            <span class="px-2 py-0.5 rounded-full text-xs bg-amber-100 text-amber-700">
+              {{ field.get_stage_display }}
+            </span>
+          </div>
+        </li>
+        {% endfor %}
+      </ul>
+      {% else %}
+      <div class="flex-1 flex items-center justify-center h-full">
+        <p class="text-sm text-gray-400">All fields are on track.</p>
+      </div>
+      {% endif %}
+    </div>
+  </div>
+
+</div>
+
+<!-- Chart.js initialisation -->
+{% if total %}
+<script>
+  // ── Shared config ──────────────────────────────────────────────────────────
+  Chart.defaults.font.family = 'ui-sans-serif, system-ui, sans-serif';
+  Chart.defaults.font.size = 12;
+  Chart.defaults.color = '#6b7280';  // Tailwind gray-500
+
+  // ── Status doughnut ────────────────────────────────────────────────────────
+  const statusCtx = document.getElementById('statusChart');
+  if (statusCtx) {
+    new Chart(statusCtx, {
+      type: 'doughnut',
+      data: {
+        labels: ['Active', 'At Risk', 'Completed'],
+        datasets: [{
+          data: [
+            {{ active_count }},
+            {{ at_risk_count }},
+            {{ completed_count }}
+          ],
+          backgroundColor: [
+            '#4ade80',   // green-400
+            '#fbbf24',   // amber-400
+            '#93c5fd',   // blue-300
+          ],
+          borderColor: '#ffffff',
+          borderWidth: 3,
+          hoverOffset: 6,
+        }]
+      },
+      options: {
+        responsive: true,
+        maintainAspectRatio: true,
+        cutout: '65%',
+        plugins: {
+          legend: {
+            position: 'bottom',
+            labels: {
+              padding: 16,
+              usePointStyle: true,
+              pointStyleWidth: 8,
+            }
+          },
+          tooltip: {
+            callbacks: {
+              label: function(context) {
+                const total = context.dataset.data.reduce((a, b) => a + b, 0);
+                const pct = total ? Math.round((context.parsed / total) * 100) : 0;
+                return ` ${context.parsed} fields (${pct}%)`;
+              }
+            }
+          }
+        }
+      }
+    });
+  }
+
+  // ── Stage bar chart ────────────────────────────────────────────────────────
+  const stageCtx = document.getElementById('stageChart');
+  if (stageCtx) {
+    new Chart(stageCtx, {
+      type: 'bar',
+      data: {
+        labels: ['Planted', 'Growing', 'Ready', 'Harvested'],
+        datasets: [{
+          label: 'Fields',
+          data: [
+            {{ stage_breakdown.planted }},
+            {{ stage_breakdown.growing }},
+            {{ stage_breakdown.ready }},
+            {{ stage_breakdown.harvested }}
+          ],
+          backgroundColor: [
+            '#93c5fd',   // blue-300  — planted
+            '#4ade80',   // green-400 — growing
+            '#fbbf24',   // amber-400 — ready
+            '#d1d5db',   // gray-300  — harvested
+          ],
+          borderRadius: 6,
+          borderSkipped: false,
+        }]
+      },
+      options: {
+        responsive: true,
+        maintainAspectRatio: true,
+        plugins: {
+          legend: { display: false },
+          tooltip: {
+            callbacks: {
+              label: function(context) {
+                return ` ${context.parsed.y} field${context.parsed.y !== 1 ? 's' : ''}`;
+              }
+            }
+          }
+        },
+        scales: {
+          x: {
+            grid: { display: false },
+            border: { display: false },
+          },
+          y: {
+            beginAtZero: true,
+            ticks: {
+              stepSize: 1,
+              precision: 0,
+            },
+            grid: {
+              color: '#f3f4f6',  // gray-100
+            },
+            border: { display: false },
+          }
+        }
+      }
+    });
+  }
+</script>
+{% endif %}
+
 <!-- Fields table -->
 <div class="bg-white rounded-xl shadow-sm overflow-hidden">
   <div class="px-5 py-4 border-b border-gray-100 flex justify-between items-center">
