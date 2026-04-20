@@ -11,34 +11,42 @@
 </div>
 
 <!-- Stats row -->
-<div class="grid grid-cols-2 gap-4 mb-6 sm:grid-cols-4">
+<div class="grid grid-cols-2 gap-3 mb-6 sm:grid-cols-4">
 
   <div style="background:var(--ss-card);border:1px solid var(--ss-border);
               border-left:4px solid var(--ss-forest);border-radius:10px;"
-       class="p-5">
-    <p style="color:var(--ss-text-muted);font-size:11px;" class="uppercase tracking-wide">Total</p>
-    <p style="color:var(--ss-forest);" class="text-3xl font-bold mt-1">{{ total }}</p>
+       class="p-4">
+    <p style="color:var(--ss-text-muted);font-size:11px;"
+       class="uppercase tracking-wide">Total</p>
+    <p style="color:var(--ss-forest);"
+       class="text-3xl font-bold mt-1">{{ total }}</p>
   </div>
 
   <div style="background:var(--ss-sage-bg);border:1px solid var(--ss-sage);
               border-left:4px solid var(--ss-sage);border-radius:10px;"
-       class="p-5">
-    <p style="color:var(--ss-sage-text);font-size:11px;" class="uppercase tracking-wide">Active</p>
-    <p style="color:var(--ss-sage-text);" class="text-3xl font-bold mt-1">{{ active_count }}</p>
+       class="p-4">
+    <p style="color:var(--ss-sage-text);font-size:11px;"
+       class="uppercase tracking-wide">Active</p>
+    <p style="color:var(--ss-sage-text);"
+       class="text-3xl font-bold mt-1">{{ active_count }}</p>
   </div>
 
   <div style="background:var(--ss-terra-bg);border:1px solid #f0bfb5;
               border-left:4px solid var(--ss-terra);border-radius:10px;"
-       class="p-5">
-    <p style="color:var(--ss-terra-text);font-size:11px;" class="uppercase tracking-wide">At Risk</p>
-    <p style="color:var(--ss-terra);" class="text-3xl font-bold mt-1">{{ at_risk_count }}</p>
+       class="p-4">
+    <p style="color:var(--ss-terra-text);font-size:11px;"
+       class="uppercase tracking-wide">At Risk</p>
+    <p style="color:var(--ss-terra);"
+       class="text-3xl font-bold mt-1">{{ at_risk_count }}</p>
   </div>
 
   <div style="background:var(--ss-gold-bg);border:1px solid #e0d88a;
               border-left:4px solid var(--ss-gold);border-radius:10px;"
-       class="p-5">
-    <p style="color:var(--ss-gold-text);font-size:11px;" class="uppercase tracking-wide">Completed</p>
-    <p style="color:var(--ss-gold);" class="text-3xl font-bold mt-1">{{ completed_count }}</p>
+       class="p-4">
+    <p style="color:var(--ss-gold-text);font-size:11px;"
+       class="uppercase tracking-wide">Completed</p>
+    <p style="color:var(--ss-gold);"
+       class="text-3xl font-bold mt-1">{{ completed_count }}</p>
   </div>
 
 </div>
@@ -47,53 +55,73 @@
 {% if total %}
 <div class="grid grid-cols-1 gap-4 mb-6 lg:grid-cols-3">
 
-  <div style="background:var(--ss-card);border:1px solid var(--ss-border);border-radius:10px;"
+  <div style="background:var(--ss-card);border:1px solid var(--ss-border);
+              border-radius:10px;"
        class="p-5 flex flex-col">
-    <h2 style="color:var(--ss-text);" class="font-medium mb-1">Status overview</h2>
-    <p style="color:var(--ss-text-muted);" class="text-xs mb-4">Current condition of all fields</p>
-    <div class="flex-1 flex items-center justify-center" style="min-height:180px;">
+    <h2 style="color:var(--ss-text);" class="font-medium mb-1">
+      Status overview
+    </h2>
+    <p style="color:var(--ss-text-muted);" class="text-xs mb-4">
+      Current condition of all fields
+    </p>
+    <div class="flex-1 flex items-center justify-center"
+         style="min-height:180px;max-height:220px;">
       <canvas id="statusChart"></canvas>
     </div>
   </div>
 
-  <div style="background:var(--ss-card);border:1px solid var(--ss-border);border-radius:10px;"
+  <div style="background:var(--ss-card);border:1px solid var(--ss-border);
+              border-radius:10px;"
        class="p-5 flex flex-col">
-    <h2 style="color:var(--ss-text);" class="font-medium mb-1">Stage breakdown</h2>
-    <p style="color:var(--ss-text-muted);" class="text-xs mb-4">How far along each field is</p>
-    <div class="flex-1 flex items-center justify-center" style="min-height:180px;">
+    <h2 style="color:var(--ss-text);" class="font-medium mb-1">
+      Stage breakdown
+    </h2>
+    <p style="color:var(--ss-text-muted);" class="text-xs mb-4">
+      How far along each field is
+    </p>
+    <div class="flex-1 flex items-center justify-center"
+         style="min-height:180px;max-height:220px;">
       <canvas id="stageChart"></canvas>
     </div>
   </div>
 
-  <div style="background:var(--ss-card);border:1px solid var(--ss-border);border-radius:10px;"
+  <div style="background:var(--ss-card);border:1px solid var(--ss-border);
+              border-radius:10px;"
        class="p-5 flex flex-col">
     <h2 style="color:var(--ss-text);" class="font-medium mb-1">
       Needs attention
       {% if needs_attention %}
       <span style="background:var(--ss-terra-bg);color:var(--ss-terra);
-                   border-radius:10px;font-size:11px;padding:2px 8px;margin-left:6px;">
+                   border-radius:10px;font-size:11px;padding:2px 8px;
+                   margin-left:6px;">
         {{ needs_attention|length }}
       </span>
       {% endif %}
     </h2>
-    <p style="color:var(--ss-text-muted);" class="text-xs mb-4">Fields with no recent updates</p>
+    <p style="color:var(--ss-text-muted);" class="text-xs mb-4">
+      Fields with no recent updates
+    </p>
     {% if needs_attention %}
     <ul class="space-y-3 flex-1">
       {% for field in needs_attention %}
-      <li class="flex justify-between items-center">
+      <li class="flex justify-between items-center gap-2">
         <a href="{% url 'fields:field_detail' field.pk %}"
            style="color:var(--ss-text);font-size:13px;"
-           class="hover:underline truncate">{{ field.name }}</a>
+           class="hover:underline truncate flex-1">
+          {{ field.name }}
+        </a>
         <span style="background:var(--ss-terra-bg);color:var(--ss-terra-text);
-                     border-radius:10px;font-size:11px;padding:2px 8px;margin-left:8px;
-                     white-space:nowrap;">
+                     border-radius:10px;font-size:11px;padding:2px 8px;
+                     white-space:nowrap;shrink:0;">
           {{ field.get_stage_display }}
         </span>
       </li>
       {% endfor %}
     </ul>
     {% else %}
-    <p style="color:var(--ss-text-muted);" class="text-sm">All fields are on track.</p>
+    <p style="color:var(--ss-text-muted);" class="text-sm">
+      All fields are on track.
+    </p>
     {% endif %}
   </div>
 
@@ -101,83 +129,99 @@
 {% endif %}
 
 <!-- Fields table -->
-<div style="background:var(--ss-card);border:1px solid var(--ss-border);border-radius:10px;"
+<div style="background:var(--ss-card);border:1px solid var(--ss-border);
+            border-radius:10px;"
      class="overflow-hidden">
   <div style="border-bottom:1px solid var(--ss-border);"
-       class="px-5 py-4 flex justify-between items-center">
+       class="px-4 py-4 flex justify-between items-center">
     <h2 style="color:var(--ss-text);" class="font-medium">Fields</h2>
     {% if request.user.is_admin %}
     <a href="{% url 'fields:field_create' %}"
-       style="background:var(--ss-forest);color:var(--ss-cream);border-radius:6px;"
-       class="text-sm px-3 py-1.5 hover:opacity-90 transition">
+       style="background:var(--ss-forest);color:var(--ss-cream);
+              border-radius:6px;"
+       class="text-sm px-3 py-1.5 hover:opacity-90 transition shrink-0">
       + New Field
     </a>
     {% endif %}
   </div>
 
-  <table class="w-full text-sm">
-    <thead>
-      <tr style="background:var(--ss-cream);color:var(--ss-text-muted);font-size:11px;">
-        <th class="px-5 py-3 text-left uppercase tracking-wide">Field</th>
-        <th class="px-5 py-3 text-left uppercase tracking-wide">Crop</th>
-        <th class="px-5 py-3 text-left uppercase tracking-wide">Stage</th>
-        <th class="px-5 py-3 text-left uppercase tracking-wide">Status</th>
-        {% if request.user.is_admin %}
-        <th class="px-5 py-3 text-left uppercase tracking-wide">Agent</th>
-        {% endif %}
-        <th class="px-5 py-3 text-left uppercase tracking-wide">Days</th>
-        <th class="px-5 py-3"></th>
-      </tr>
-    </thead>
-    <tbody>
-      {% for field in fields %}
-      <tr style="border-top:1px solid var(--ss-border);"
-          class="hover:bg-amber-50 transition">
-        <td class="px-5 py-3">
-          <span style="color:var(--ss-text);font-weight:500;">{{ field.name }}</span>
-        </td>
-        <td class="px-5 py-3" style="color:var(--ss-text-muted);">{{ field.crop_type }}</td>
-        <td class="px-5 py-3" style="color:var(--ss-text-muted);">{{ field.get_stage_display }}</td>
-        <td class="px-5 py-3">
-          {% if field.status == 'active' %}
-          <span style="background:var(--ss-sage-bg);color:var(--ss-sage-text);
-                       border-radius:10px;font-size:11px;padding:3px 10px;">
-            Active
-          </span>
-          {% elif field.status == 'at_risk' %}
-          <span style="background:var(--ss-terra-bg);color:var(--ss-terra-text);
-                       border-radius:10px;font-size:11px;padding:3px 10px;">
-            At Risk
-          </span>
-          {% else %}
-          <span style="background:var(--ss-gold-bg);color:var(--ss-gold-text);
-                       border-radius:10px;font-size:11px;padding:3px 10px;">
-            Completed
-          </span>
+  <!-- Horizontal scroll wrapper for mobile -->
+  <div class="overflow-x-auto">
+    <table class="w-full text-sm" style="min-width:500px;">
+      <thead>
+        <tr style="background:var(--ss-cream);color:var(--ss-text-muted);
+                   font-size:11px;">
+          <th class="px-4 py-3 text-left uppercase tracking-wide">Field</th>
+          <th class="px-4 py-3 text-left uppercase tracking-wide">Crop</th>
+          <th class="px-4 py-3 text-left uppercase tracking-wide">Stage</th>
+          <th class="px-4 py-3 text-left uppercase tracking-wide">Status</th>
+          {% if request.user.is_admin %}
+          <th class="px-4 py-3 text-left uppercase tracking-wide">Agent</th>
           {% endif %}
-        </td>
-        {% if request.user.is_admin %}
-        <td class="px-5 py-3" style="color:var(--ss-text-muted);">
-          {{ field.assigned_agent.username|default:"Unassigned" }}
-        </td>
-        {% endif %}
-        <td class="px-5 py-3" style="color:var(--ss-text-muted);">
-          {{ field.days_since_planted }}
-        </td>
-        <td class="px-5 py-3">
-          <a href="{% url 'fields:field_detail' field.pk %}"
-             style="color:var(--ss-terra);font-size:12px;"
-             class="hover:underline">View &#8594;</a>
-        </td>
-      </tr>
-      {% empty %}
-      <tr>
-        <td colspan="7" class="px-5 py-10 text-center"
-            style="color:var(--ss-text-muted);">No fields yet.</td>
-      </tr>
-      {% endfor %}
-    </tbody>
-  </table>
+          <th class="px-4 py-3 text-left uppercase tracking-wide">Days</th>
+          <th class="px-4 py-3"></th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for field in fields %}
+        <tr style="border-top:1px solid var(--ss-border);"
+            class="hover:bg-amber-50 transition">
+          <td class="px-4 py-3">
+            <span style="color:var(--ss-text);font-weight:500;">
+              {{ field.name }}
+            </span>
+          </td>
+          <td class="px-4 py-3"
+              style="color:var(--ss-text-muted);">{{ field.crop_type }}</td>
+          <td class="px-4 py-3"
+              style="color:var(--ss-text-muted);">
+            {{ field.get_stage_display }}
+          </td>
+          <td class="px-4 py-3">
+            {% if field.status == 'active' %}
+            <span style="background:var(--ss-sage-bg);color:var(--ss-sage-text);
+                         border-radius:10px;font-size:11px;padding:3px 10px;
+                         white-space:nowrap;">
+              Active
+            </span>
+            {% elif field.status == 'at_risk' %}
+            <span style="background:var(--ss-terra-bg);
+                         color:var(--ss-terra-text);
+                         border-radius:10px;font-size:11px;padding:3px 10px;
+                         white-space:nowrap;">
+              At Risk
+            </span>
+            {% else %}
+            <span style="background:var(--ss-gold-bg);color:var(--ss-gold-text);
+                         border-radius:10px;font-size:11px;padding:3px 10px;
+                         white-space:nowrap;">
+              Completed
+            </span>
+            {% endif %}
+          </td>
+          {% if request.user.is_admin %}
+          <td class="px-4 py-3" style="color:var(--ss-text-muted);">
+            {{ field.assigned_agent.username|default:"Unassigned" }}
+          </td>
+          {% endif %}
+          <td class="px-4 py-3" style="color:var(--ss-text-muted);">
+            {{ field.days_since_planted }}
+          </td>
+          <td class="px-4 py-3">
+            <a href="{% url 'fields:field_detail' field.pk %}"
+               style="color:var(--ss-terra);font-size:12px;white-space:nowrap;"
+               class="hover:underline">View &#8594;</a>
+          </td>
+        </tr>
+        {% empty %}
+        <tr>
+          <td colspan="7" class="px-4 py-10 text-center"
+              style="color:var(--ss-text-muted);">No fields yet.</td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
 </div>
 
 <!-- Chart.js init -->
@@ -208,6 +252,7 @@
     },
     options: {
       responsive: true,
+      maintainAspectRatio: true,
       cutout: '65%',
       plugins: {
         legend: {
@@ -246,11 +291,14 @@
     },
     options: {
       responsive: true,
+      maintainAspectRatio: true,
       plugins: {
         legend: { display: false },
         tooltip: {
           callbacks: {
-            label: ctx => ` ${ctx.parsed.y} field${ctx.parsed.y !== 1 ? 's' : ''}`
+            label: ctx => {
+              return ` ${ctx.parsed.y} field${ctx.parsed.y !== 1 ? 's' : ''}`;
+            }
           }
         }
       },

@@ -3,37 +3,77 @@
 
 {% block content %}
 <div class="flex justify-between items-center mb-6">
-  <h1 class="text-2xl font-semibold text-gray-800">Fields</h1>
+  <div>
+    <h1 style="color:var(--ss-text);" class="text-2xl font-semibold">Fields</h1>
+    <p style="color:var(--ss-text-muted);" class="text-sm mt-1">
+      {{ fields|length }} field{{ fields|length|pluralize }} total
+    </p>
+  </div>
   {% if request.user.is_admin %}
   <a href="{% url 'fields:field_create' %}"
-     class="bg-green-600 text-white text-sm px-4 py-2 rounded-lg hover:bg-green-700">
+     style="background:var(--ss-forest);color:var(--ss-cream);border-radius:6px;"
+     class="text-sm px-4 py-2 hover:opacity-90 transition shrink-0">
     + New Field
   </a>
   {% endif %}
 </div>
 
-<div class="grid grid-cols-2 gap-4 sm:grid-cols-3">
+<div class="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
   {% for field in fields %}
   <a href="{% url 'fields:field_detail' field.pk %}"
-     class="bg-white rounded-xl shadow-sm p-5 hover:shadow-md transition block">
-    <div class="flex justify-between items-start">
-      <div>
-        <h2 class="font-medium text-gray-800">{{ field.name }}</h2>
-        <p class="text-sm text-gray-500 mt-0.5">{{ field.crop_type }}</p>
+     style="background:var(--ss-card);border:1px solid var(--ss-border);
+            border-radius:10px;"
+     class="p-5 hover:shadow-md transition block">
+    <div class="flex justify-between items-start gap-2">
+      <div class="min-w-0">
+        <h2 style="color:var(--ss-text);" class="font-medium truncate">
+          {{ field.name }}
+        </h2>
+        <p style="color:var(--ss-text-muted);" class="text-sm mt-0.5">
+          {{ field.crop_type }}
+        </p>
       </div>
-      <span class="px-2 py-0.5 rounded-full text-xs font-medium
-        {% if field.status == 'active' %}bg-green-100 text-green-700
-        {% elif field.status == 'at_risk' %}bg-amber-100 text-amber-700
-        {% else %}bg-gray-100 text-gray-500{% endif %}">
-        {{ field.status_label }}
+      <span class="shrink-0 px-2 py-0.5 rounded-full text-xs font-medium
+        {% if field.status == 'active' %}
+          " style="background:var(--ss-sage-bg);color:var(--ss-sage-text);
+                   border-radius:10px;font-size:11px;padding:3px 10px;">
+          Active
+        {% elif field.status == 'at_risk' %}
+          " style="background:var(--ss-terra-bg);color:var(--ss-terra-text);
+                   border-radius:10px;font-size:11px;padding:3px 10px;">
+          At Risk
+        {% else %}
+          " style="background:var(--ss-gold-bg);color:var(--ss-gold-text);
+                   border-radius:10px;font-size:11px;padding:3px 10px;">
+          Completed
+        {% endif %}
       </span>
     </div>
-    <div class="mt-3 text-xs text-gray-400">
-      {{ field.get_stage_display }} · {{ field.days_since_planted }} days
+    <div class="mt-4 flex justify-between items-center">
+      <span style="color:var(--ss-text-muted);font-size:12px;">
+        {{ field.get_stage_display }}
+      </span>
+      <span style="color:var(--ss-text-muted);font-size:12px;">
+        {{ field.days_since_planted }} days
+      </span>
     </div>
+    {% if request.user.is_admin %}
+    <div style="color:var(--ss-text-muted);font-size:12px;margin-top:6px;">
+      Agent: {{ field.assigned_agent.username|default:"Unassigned" }}
+    </div>
+    {% endif %}
   </a>
   {% empty %}
-  <p class="col-span-3 text-center text-gray-400 py-12">No fields yet.</p>
+  <div class="col-span-1 sm:col-span-2 lg:col-span-3 text-center py-16">
+    <p style="color:var(--ss-text-muted);" class="text-lg">No fields yet.</p>
+    {% if request.user.is_admin %}
+    <a href="{% url 'fields:field_create' %}"
+       style="color:var(--ss-terra);"
+       class="text-sm hover:underline mt-2 inline-block">
+      Create your first field →
+    </a>
+    {% endif %}
+  </div>
   {% endfor %}
 </div>
 {% endblock %}
