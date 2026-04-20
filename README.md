@@ -8,7 +8,7 @@ A web application for tracking crop progress across multiple fields during a gro
 - **Frontend** — HTMX + Tailwind CSS 
 - **Database** — SQLite (development) / PostgreSQL (production)
 - **Deployment** — Railway
-- **Python** — 3.9+
+- **Python** — 3.12
 
 ---
 
@@ -88,7 +88,7 @@ Visit `http://localhost:8000`
 
 | Role | Username | Password |
 |------|----------|----------|
-| Admin | admin | (password you set with createsuperuser) |
+| Admin | Admin_1 | Smartseason2026! |
 | Agent | agent_john | agent123 |
 | Agent | agent_sara | agent123 |
 
@@ -96,7 +96,7 @@ Visit `http://localhost:8000`
 
 ## Live deployment
 
-Deployed on Railway: `<your-railway-url-here>`
+Deployed on Railway: `https://smartseason-prod.up.railway.app`
 
 Use the demo credentials above to log in.
 
